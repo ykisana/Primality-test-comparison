@@ -9,13 +9,13 @@
 #define LL long long
 #pragma once
 
-int modulo(int b, int e, int m);
-int calcJacobian(int a, int n);
+LL modulo(LL b, LL e, LL m);
+LL calcJacobian(LL a, LL n);
 
 // for binary exponentiation
-int modulo(int b, int e, int m){
-    int x = 1;
-    int y = b;
+LL modulo(LL b, LL e, LL m){
+    LL x = 1;
+    LL y = b;
     while(e > 0){
         if(e % 2 == 1){
             x = (x*y) % m;
@@ -27,11 +27,11 @@ int modulo(int b, int e, int m){
 }
 
 // function to calculate jacobian
-int calcJacobian(int a, int n){
+LL calcJacobian(LL a, LL n){
     if(a == 0){
         return 0;
     }
-    int answer = 1;
+    LL answer = 1;
     if(a < 0){
         a = -a;
         if(n % 4 == 3){
@@ -68,7 +68,7 @@ int calcJacobian(int a, int n){
 
 }
 
-bool solovoyTest(int n, int k){
+bool solovoyTest(LL n, LL k){
     // base cases
     if (n == 1 || n == 2){
         return true;
@@ -77,12 +77,15 @@ bool solovoyTest(int n, int k){
     if (n != 2 && n % 2 == 0) return false;
 
     // iterate k times, check if probable prime
-    for(int i = 0; i < k; i++){
-        int a = rand() % (n - 1) +1;
-        int jac = (calcJacobian(a,n) + n) % n;
-        int mod = modulo(a, (n-1)/2, n);
+    for(LL i = 0; i < k; i++){
+        LL a = rand() % (n - 1) +1;
+        // jacobian and modulo function above used
+        LL jac = (calcJacobian(a,n) + n) % n;
+        LL mod = modulo(a, (n-1)/2, n);
 
+        // return false if composite in any iteration of k
         if (jac == 0 || mod != jac) return false;
     }
+    // passed loop, it is probably prime
     return true;
 }
